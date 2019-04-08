@@ -1,0 +1,43 @@
+{
+    "name": "tobidsn/admin-generator",
+    "license": "MIT",
+    "description": "Laravel Admin CRUD Generator",
+    "keywords": [
+        "laravel",
+        "crud",
+        "crud generator",
+        "laravel crud generator",
+        "admin generator"
+    ],
+    "authors": [
+        {
+            "name": "Tobidsn",
+            "email": "tobidsn@gmail.com",
+            "homepage": "saga.id"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "illuminate/support": "^5.5"
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.0",
+        "phpunit/phpunit": "^7.5",
+        "orchestra/testbench": "^3.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tobidsn\\CrudGenerator\\": "src/"
+        },
+        "classmap": [
+            "tests"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Tobidsn\\CrudGenerator\\CrudGeneratorServiceProvider"
+            ]
+        }
+    }
+}

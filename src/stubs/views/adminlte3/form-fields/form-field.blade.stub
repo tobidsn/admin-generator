@@ -1,0 +1,1 @@
+<input class="form-control" name="%%itemName%%" type="%%fieldType%%" id="%%itemName%%" placeholder="{{ucfirst('%%itemName%%')}}" value="{{ isset($%%crudNameSingular%%->%%itemName%%) ? $%%crudNameSingular%%->%%itemName%% : old('%%itemName%%') }}" %%required%%>
