@@ -142,7 +142,11 @@ class CrudGenerator extends Command
             $this->getStub('Controller')
         );
 
-        file_put_contents(app_path("/Http/Controllers/Admin/{$name}Controller.php"), $controllerTemplate);
+        if (!file_exists(app_path("Http/Controllers/Admin"))) {
+          mkdir(app_path("Http/Controllers/Admin"), 0755, true);
+        }
+
+        file_put_contents(app_path("Http/Controllers/Admin/{$name}Controller.php"), $controllerTemplate);
     }
 
     protected function model($name, $tableName)
@@ -159,7 +163,7 @@ class CrudGenerator extends Command
             $this->getStub('Model')
         );
 
-        file_put_contents(app_path("/{$name}.php"), $modelTemplate);
+        file_put_contents(app_path("{$name}.php"), $modelTemplate);
     }
 
     protected function request($name, $tableName)
@@ -191,7 +195,7 @@ class CrudGenerator extends Command
             $this->getStub('Request')
         );
 
-        file_put_contents(app_path("/Http/Requests/{$name}Request.php"), $requestTemplate);
+        file_put_contents(app_path("Http/Requests/{$name}Request.php"), $requestTemplate);
     }
 
     protected function getStub($type)
