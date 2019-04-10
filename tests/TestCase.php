@@ -18,6 +18,7 @@ abstract class TestCase extends Orchestra\Testbench\TestCase
             'view_columns_number' => 3,
             'dynamic_view_template' => [
                 'index' => ['formHeadingHtml', 'formBodyHtml', 'crudName', 'crudNameCap', 'modelName', 'viewName', 'routeGroup', 'primaryKey'],
+                'list' => ['formHeadingHtml', 'formBodyHtml', 'crudName', 'crudNameCap', 'modelName', 'viewName', 'routeGroup', 'primaryKey'],
                 'form' => ['formFieldsHtml'],
                 'create' => ['crudName', 'crudNameCap', 'modelName', 'modelNameCap', 'viewName', 'routeGroup', 'viewTemplateDir'],
                 'edit' => ['crudName', 'crudNameSingular', 'crudNameCap', 'modelNameCap', 'modelName', 'viewName', 'routeGroup', 'primaryKey', 'viewTemplateDir'],
@@ -32,7 +33,6 @@ abstract class TestCase extends Orchestra\Testbench\TestCase
 
         exec('rm -rf ' . __DIR__ . '/temp/*');
         exec('rm -rf ' . app_path() . '/*');
-        exec('rm -rf ' . database_path('migrations') . '/*');
     }
 
     public function tearDown()
