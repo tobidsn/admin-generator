@@ -16,6 +16,13 @@ This Generator package provides various generators like Admin CRUD, Controller, 
 composer require tobidsn/admin-generator
 ```
 
+Once the package is installed, you should register the `Tobidsn\CrudGenerator\CrudGeneratorServiceProvider` service provider. Normally, Laravel 5.5+ will register the service provider automatically.
+
+After that, publish its assets using the `vendor:publish` Artisan command:
+```
+php artisan vendor:publish --provider="Tobidsn\CrudGenerator\CrudGeneratorServiceProvider"
+```
+
 ## License
 
 This project is licensed under the MIT License - see the [License File](LICENSE) for details
