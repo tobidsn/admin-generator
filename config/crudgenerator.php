@@ -70,7 +70,7 @@ return [
     /**
      * Namespace of the controller.
      */
-    'route_group' => 'magic',
+    'route_group' => 'admin',
 
     /**
      * The name of the view path.

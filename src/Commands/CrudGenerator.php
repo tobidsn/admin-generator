@@ -98,9 +98,10 @@ class CrudGenerator extends Command
         $this->call('crud:view', ['name' => strtolower($name), '--table' => $this->getField($tableName), '--view-path' => $viewPath, '--route-group' => $routeGroup, '--form-helper' => $this->formHelper]);
         
 
-        $list = strtolower($name).'list';
-        File::append(base_path('routes/web.php'), "\xA". 'Route::resource(\'' . strtolower($name) . "', '{$name}Controller');");
-        File::append(base_path('routes/web.php'), "\xA". 'Route::get(\'' . $list . "', '{$name}Controller@list');");
+        $route = $this->routeGroup.'/'.strtolower($name);
+        $list = $this->routeGroup.'/'.strtolower($name).'list';
+        File::append(base_path('routes/web.php'), "\xA". 'Route::resource(\'' . $route . "', 'Admin\\{$name}Controller');");
+        File::append(base_path('routes/web.php'), "\xA". 'Route::get(\'' . $list . "', 'Admin\\{$name}Controller@list');");
 
         $this->info('Controller successfully.');
         $this->info('Model successfully.');

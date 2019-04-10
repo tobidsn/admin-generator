@@ -29,8 +29,13 @@ class CrudGeneratorServiceProvider extends ServiceProvider
         ]);
 
         $this->publishes([
+            __DIR__ . '/../publish/assets/' => public_path('/') ,
+        ]);
+        
+        $this->publishes([
             __DIR__ . '/stubs/' => base_path('resources/stubs/'),
         ]);
+
     }
 
     /**
