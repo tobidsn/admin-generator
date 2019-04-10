@@ -13,7 +13,7 @@ This Generator package provides various generators like Admin CRUD, Controller, 
 
 ## Installation
 ```
-composer require tobidsn/admin-generator --dev
+composer require tobidsn/admin-generator
 ```
 
 ## License
