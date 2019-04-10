@@ -305,7 +305,10 @@ class CrudViewCommand extends Command
         $this->formFields = $this->option('table');
 
         foreach ($this->formFields as $item) {
-            $this->formFieldsHtml .= $this->createField($item);
+            $fieldExist = array('id','created_at','updated_at');
+            if (!in_array($item['name'], $fieldExist)) {
+                $this->formFieldsHtml .= $this->createField($item);
+            }
         }
 
         $i = 0;

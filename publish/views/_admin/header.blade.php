@@ -108,12 +108,12 @@
         </li> --}}
         <li class="nav-item dropdown user user-menu">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                <img src="/img/avatar.png" class="user-image img-circle elevation-2" alt="User Image">
+                <img src="/dist/img/avatar.png" class="user-image img-circle elevation-2" alt="User Image">
             </a>
             <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <!-- User image -->
                 <li class="user-header bg-primary">
-                    <img src="/img/avatar.png" class="img-circle elevation-2" alt="User Image">
+                    <img src="/dist/img/avatar.png" class="img-circle elevation-2" alt="User Image">
 
                     <p>
                         {{ Auth::user()->name }} - {{ ucfirst(Auth::user()->usertype) }}

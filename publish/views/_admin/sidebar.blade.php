@@ -41,7 +41,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('site.settings') }}" class="nav-link ">
+                            <a href="{{ url('site/settings') }}" class="nav-link ">
                                 <i class="fa fa-circle-o nav-icon"></i>
                                 <p>General</p>
                             </a>
