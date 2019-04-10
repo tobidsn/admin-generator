@@ -46,7 +46,7 @@ class {{modelName}}Controller extends Controller
         {{request}}
         $data->save();
 
-        return redirect('magic/{{modelNameSingularLowerCase}}')->with('success', '{{modelName}} added!');
+        return redirect('{{routeGroup}}/{{modelNameSingularLowerCase}}')->with('success', '{{modelName}} added!');
     }
 
     public function edit($id)
@@ -70,7 +70,7 @@ class {{modelName}}Controller extends Controller
         {{request}}
         $data->save();
         
-        return redirect('magic/{{modelNameSingularLowerCase}}')->with('success', '{{modelName}} updated!');
+        return redirect('{{routeGroup}}/{{modelNameSingularLowerCase}}')->with('success', '{{modelName}} updated!');
     }
 
     public function destroy(Request $request, $id)
@@ -80,7 +80,7 @@ class {{modelName}}Controller extends Controller
         if($request->ajax()){
             return array("message" => '{{modelName}} deleted!', "id" => $id);
         } else {
-            return redirect('magic/{{modelNameSingularLowerCase}}')->with('success', '{{modelName}} deleted!');
+            return redirect('{{routeGroup}}/{{modelNameSingularLowerCase}}')->with('success', '{{modelName}} deleted!');
         }
     }
 }

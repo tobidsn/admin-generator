@@ -92,7 +92,7 @@ class CrudGenerator extends Command
 
     protected function buildClass($name, $viewPath, $modelName, $tableName, $routeGroup)
     {
-        $this->controller($modelName, $viewPath, $tableName);
+        $this->controller($modelName, $viewPath, $tableName, $routeGroup);
         $this->model($name, $tableName);
         $this->request($name, $tableName);
         $this->call('crud:view', ['name' => strtolower($name), '--table' => $this->getField($tableName), '--view-path' => $viewPath, '--route-group' => $routeGroup, '--form-helper' => $this->formHelper]);
@@ -108,7 +108,7 @@ class CrudGenerator extends Command
         $this->info('Request Validation successfully.');
     }
 
-    protected function controller($name, $viewPath, $tableName)
+    protected function controller($name, $viewPath, $tableName, $routeGroup)
     {   
         $formFields = $this->getField($tableName);
         $request = '';
@@ -132,6 +132,7 @@ class CrudGenerator extends Command
                 '{{modelNameSingularLowerCase}}',
                 '{{viewPath}}',
                 '{{request}}',
+                '{{routeGroup}}',
             ],
             [
                 $name,
@@ -139,6 +140,7 @@ class CrudGenerator extends Command
                 strtolower($name),
                 $viewPath,
                 $request,
+                $routeGroup,
             ],
             $this->getStub('Controller')
         );
