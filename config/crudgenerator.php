@@ -13,7 +13,7 @@ return [
     |
      */
 
-    'path' => base_path('resources/crud-generator/'),
+    'path' => base_path('resources/stubs/'),
 
     /**
      * Columns number to show in view's table.
