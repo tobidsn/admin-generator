@@ -1,0 +1,86 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\{{modelName}}Request;
+use App\{{modelName}};
+
+class {{modelName}}Controller extends Controller
+{   
+    private $title;
+
+    function __construct()
+    {
+        $this->title = '{{modelName}}';
+    }
+
+    public function index(Request $request)
+    {   
+        return view('{{viewPath}}.{{modelNameSingularLowerCase}}.index')->with('title', $this->title);
+    }
+
+    public function list(Request $request)
+    {   
+        $keyword = $request->get('only');
+        if (!empty($keyword)) {
+            ${{modelNameSingularLowerCase}} = {{modelName}}::latest()->paginate(10);
+        } else {
+            ${{modelNameSingularLowerCase}} = {{modelName}}::latest()->paginate(10);
+        }
+        
+        return view('{{viewPath}}.{{modelNameSingularLowerCase}}.list', compact('{{modelNameSingularLowerCase}}','keyword'));
+    }
+
+    public function create()
+    {
+        return view('{{viewPath}}.{{modelNameSingularLowerCase}}.create')->with('title', $this->title);
+    }
+
+    public function store({{modelName}}Request $request)
+    {   
+        $validated = $request->validated();
+
+        $data= new {{modelName}};
+        {{request}}
+        $data->save();
+
+        return redirect('magic/{{modelNameSingularLowerCase}}')->with('success', '{{modelName}} added!');
+    }
+
+    public function edit($id)
+    {
+        ${{modelNameSingularLowerCase}} = {{modelName}}::findOrFail($id);
+        return view('{{viewPath}}.{{modelNameSingularLowerCase}}.edit', compact('{{modelNameSingularLowerCase}}'))->with('title', $this->title);
+    } 
+
+    public function show($id)
+    {
+        ${{modelNameSingularLowerCase}} = {{modelName}}::findOrFail($id);
+                
+        return view('{{viewPath}}.{{modelNameSingularLowerCase}}.show', compact('{{modelNameSingularLowerCase}}'))->with('title', $this->title);
+    }
+
+    public function update({{modelName}}Request $request, $id)
+    {
+        $validated = $request->validated();
+
+        $data = {{modelName}}::findOrFail($id);
+        {{request}}
+        $data->save();
+        
+        return redirect('magic/{{modelNameSingularLowerCase}}')->with('success', '{{modelName}} updated!');
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        {{modelName}}::destroy($id);
+
+        if($request->ajax()){
+            return array("message" => '{{modelName}} deleted!', "id" => $id);
+        } else {
+            return redirect('magic/{{modelNameSingularLowerCase}}')->with('success', '{{modelName}} deleted!');
+        }
+    }
+}

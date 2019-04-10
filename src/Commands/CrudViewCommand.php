@@ -302,38 +302,7 @@ class CrudViewCommand extends Command
             File::makeDirectory($path, 0755, true);
         }
 
-        $tableName = $this->option('table');
-        
-        $fieldsArray = DB::select(DB::raw('SHOW FIELDS FROM '.$tableName));
-
-        $this->formFields = [];
-
-        if ($fieldsArray) {
-            $x = 0;
-            foreach ($fieldsArray as $item) {
-
-                $fieldExist = array('id','created_at','updated_at');
-                if (in_array($item->Field, $fieldExist)) {
-                    continue;
-                }
-                $type = preg_replace("/\([^)]+\)/","",$item->Type);
-                $type = explode(' ', trim($type));
-                $type = $type[0];
-
-                $this->formFields[$x]['name'] = $item->Field;
-                $this->formFields[$x]['type'] = $type;
-                $this->formFields[$x]['required'] = ($item->Null == 'NO') ? true : false;
-
-                if (($this->formFields[$x]['type'] === 'select' || $this->formFields[$x]['type'] === 'enum')) 
-                {
-                    preg_match('#\((.*?)\)#', $item->Type, $match);
-                    $options = $match[1];
-                    $this->formFields[$x]['options'] = $options;
-                }
-
-                $x++;
-            }
-        }
+        $this->formFields = $this->option('table');
 
         foreach ($this->formFields as $item) {
             $this->formFieldsHtml .= $this->createField($item);

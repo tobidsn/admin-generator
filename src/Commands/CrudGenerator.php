@@ -95,7 +95,7 @@ class CrudGenerator extends Command
         $this->controller($modelName, $viewPath, $tableName);
         $this->model($name, $tableName);
         $this->request($name, $tableName);
-        $this->call('crud:view', ['name' => strtolower($name), '--table' => $tableName, '--view-path' => $viewPath, '--route-group' => $routeGroup, '--form-helper' => $this->formHelper]);
+        $this->call('crud:view', ['name' => strtolower($name), '--table' => $this->getField($tableName), '--view-path' => $viewPath, '--route-group' => $routeGroup, '--form-helper' => $this->formHelper]);
         
 
         $list = strtolower($name).'list';
