@@ -1,6 +1,5 @@
 # Laravel Admin CRUD Generator
 
-[![Build Status](https://travis-ci.org/tobidsn/admin-generator.svg)](https://travis-ci.org/tobidsn/admin-generator.svg)
 [![Total Downloads](https://poser.pugx.org/tobidsn/admin-generator/d/total.svg)](https://packagist.org/packages/tobidsn/admin-generator)
 [![Latest Stable Version](https://poser.pugx.org/tobidsn/admin-generator/v/stable.svg)](https://packagist.org/packages/tobidsn/admin-generator)
 [![License](https://poser.pugx.org/tobidsn/admin-generator/license.svg)](https://packagist.org/packages/tobidsn/admin-generator)
