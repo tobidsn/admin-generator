@@ -5,7 +5,7 @@
 [![Latest Stable Version](https://poser.pugx.org/tobidsn/admin-generator/v/stable.svg)](https://packagist.org/packages/tobidsn/admin-generator)
 [![License](https://poser.pugx.org/tobidsn/admin-generator/license.svg)](https://packagist.org/packages/tobidsn/admin-generator)
 
-This Generator package provides various generators like Admin CRUD, Controller, Model, View based from table database for your painless development of your applications.
+This Generator package provides various generators like Admin CRUD, Controller, Model, View based from table for your painless development of your applications.
 
 ## Requirements
     Laravel >= 5.5
