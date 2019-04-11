@@ -68,7 +68,7 @@ return [
     ],
 
     /**
-     * Namespace of the controller.
+     * Name prefix of the controller.
      */
     'route_group' => 'admin',
 
