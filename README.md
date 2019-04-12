@@ -52,6 +52,14 @@ protected $signature = 'crud:admin {name : Class (singular) for example User}
                         {--route-group= : The name of the Model.}
                         {--view-path= : The name of the view path.}';
 ```
+## Test
+
+```
+php artisan serve
+```
+
+Please Login to laravel and access `http://localhost:8000/admin/user`
+
 
 ## Configuration
 
