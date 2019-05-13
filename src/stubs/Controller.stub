@@ -41,10 +41,8 @@ class {{modelName}}Controller extends Controller
     public function store({{modelName}}Request $request)
     {   
         $validated = $request->validated();
-
-        $data= new {{modelName}};
-        {{request}}
-        $data->save();
+        
+        $data = {{modelName}}::newRecord($request);
 
         return redirect('{{routeGroup}}/{{modelNameSingularLowerCase}}')->with('success', '{{modelName}} added!');
     }
@@ -65,10 +63,8 @@ class {{modelName}}Controller extends Controller
     public function update({{modelName}}Request $request, $id)
     {
         $validated = $request->validated();
-
-        $data = {{modelName}}::findOrFail($id);
-        {{request}}
-        $data->save();
+        
+        $data = {{modelName}}::updateRecord($request, $id);
         
         return redirect('{{routeGroup}}/{{modelNameSingularLowerCase}}')->with('success', '{{modelName}} updated!');
     }

@@ -110,6 +110,34 @@ class CrudGenerator extends Command
 
     protected function controller($name, $viewPath, $tableName, $routeGroup)
     {   
+        
+        $controllerTemplate = str_replace(
+            [
+                '{{modelName}}',
+                '{{modelNamePluralLowerCase}}',
+                '{{modelNameSingularLowerCase}}',
+                '{{viewPath}}',
+                '{{routeGroup}}',
+            ],
+            [
+                $name,
+                strtolower(str_plural($name)),
+                strtolower($name),
+                $viewPath,
+                $routeGroup,
+            ],
+            $this->getStub('Controller')
+        );
+
+        if (!file_exists(app_path("Http/Controllers/Admin"))) {
+          mkdir(app_path("Http/Controllers/Admin"), 0755, true);
+        }
+
+        file_put_contents(app_path("Http/Controllers/Admin/{$name}Controller.php"), $controllerTemplate);
+    }
+
+    protected function model($name, $tableName)
+    {   
         $formFields = $this->getField($tableName);
         $request = '';
         foreach ($formFields as $key => $value) {
@@ -125,43 +153,16 @@ class CrudGenerator extends Command
             }
         }
 
-        $controllerTemplate = str_replace(
-            [
-                '{{modelName}}',
-                '{{modelNamePluralLowerCase}}',
-                '{{modelNameSingularLowerCase}}',
-                '{{viewPath}}',
-                '{{request}}',
-                '{{routeGroup}}',
-            ],
-            [
-                $name,
-                strtolower(str_plural($name)),
-                strtolower($name),
-                $viewPath,
-                $request,
-                $routeGroup,
-            ],
-            $this->getStub('Controller')
-        );
-
-        if (!file_exists(app_path("Http/Controllers/Admin"))) {
-          mkdir(app_path("Http/Controllers/Admin"), 0755, true);
-        }
-
-        file_put_contents(app_path("Http/Controllers/Admin/{$name}Controller.php"), $controllerTemplate);
-    }
-
-    protected function model($name, $tableName)
-    {
         $modelTemplate = str_replace(
             [
                 '{{modelName}}',
                 '{{tableName}}',
+                '{{request}}'
             ],
             [
                 $name,
                 $tableName,
+                $request
             ],
             $this->getStub('Model')
         );

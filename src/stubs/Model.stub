@@ -12,4 +12,22 @@ class {{modelName}} extends Model
      * @var string
      */
     protected $table = '{{tableName}}';
+
+    public static function newRecord($request)
+    {
+        $data= new {{modelName}};
+        {{request}}
+        $data->save();
+
+        return $data;
+    }
+
+    public static function updateRecord($request, $id)
+    {
+        $data = {{modelName}}::findOrFail($id);
+        {{request}}
+        $data->save();
+
+        return $data;
+    }
 }
