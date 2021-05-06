@@ -1,0 +1,80 @@
+<?php
+
+namespace App\Http\Controllers\Api\Cms;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Cms\{{modelName}}Request;
+use App\Http\Resources\Cms\{{modelName}}Collection;
+use App\Http\Resources\Cms\{{modelName}}Resource;
+use App\Models\{{modelName}};
+use Illuminate\Http\Request;
+
+class {{modelName}}Controller extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        $perPage = $request->get('per-page', 10);
+        $query = {{modelName}}::filter($request->all());
+        $query = $query->paginate($perPage)->withQueryString();
+        return {{modelName}}Collection::make($query);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\{{modelName}}Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store({{modelName}}Request $request)
+    {
+        $model = {{modelName}}::add($request);
+        return {{modelName}}Resource::make($model);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\{{modelName}}  ${{modelNameSingularLowerCase}}
+     * @return \Illuminate\Http\Response
+     */
+    public function show({{modelName}} ${{modelNameSingularLowerCase}})
+    {
+        return {{modelName}}Resource::make(${{modelNameSingularLowerCase}});
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\{{modelName}} Request  $request
+     * @param  \App\Models\{{modelName}}  ${{modelNameSingularLowerCase}}
+     * @return \Illuminate\Http\Response
+     */
+    public function update({{modelName}}Request $request, {{modelName}} ${{modelNameSingularLowerCase}})
+    {
+        ${{modelNameSingularLowerCase}}->fill($request->validated());
+
+        // only save when some attribute is modified
+        if (${{modelNameSingularLowerCase}}->isDirty()) {
+            ${{modelNameSingularLowerCase}}->save();
+        }
+
+        return {{modelName}}Resource::make(${{modelNameSingularLowerCase}});
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\{{modelName}}  ${{modelNameSingularLowerCase}}
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy({{modelName}} ${{modelNameSingularLowerCase}})
+    {
+        ${{modelNameSingularLowerCase}}->delete();
+        return response()->noContent();
+    }
+}

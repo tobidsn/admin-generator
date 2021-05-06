@@ -1,0 +1,136 @@
+<?php
+
+namespace App\Models;
+
+use App\Http\Requests\Cms\{{modelName}}Request;
+use App\Traits\Model\FilterTrait;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Log;
+
+class {{modelName}} extends Model
+{
+    use HasFactory, FilterTrait;
+
+    const DISK = 'assets';
+    const UPLOAD_DIR = '{{modelNameSingularLowerCase}}';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        {{fillable}}
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        // ...
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Filter Trait Variables
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * String fields for filtering
+     *
+     * @var array
+     */
+    protected $likeFilterFields = ['title'];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Getters
+    |--------------------------------------------------------------------------
+    */
+
+    public function getImageAttribute($value)
+    {
+        /* handle seeder image */
+        if (strpos($value, 'http://') !== false || strpos($value, 'https://') !== false) {
+            return url($value);
+        }
+
+        return Storage::disk(static::DISK)->url($value);
+    }
+
+    public function getImageMobileAttribute($value)
+    {
+        /* handle seeder image */
+        if (strpos($value, 'http://') !== false || strpos($value, 'https://') !== false) {
+            return url($value);
+        }
+
+        return Storage::disk(static::DISK)->url($value);
+    }
+
+    public function getImagePreviewAttribute($value)
+    {
+        /* handle seeder image */
+        if (strpos($value, 'http://') !== false || strpos($value, 'https://') !== false) {
+            return url($value);
+        }
+
+        return Storage::disk(static::DISK)->url($value);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Actions
+    |--------------------------------------------------------------------------
+    */
+
+    public static function add({{modelName}}Request $request)
+    {
+        $model = new static($request->validated());
+        $model->save();
+        return $model;
+    }
+
+    public function updateImage($field, UploadedFile $image)
+    {
+        $this->deleteImage($field);
+        $this->{$field} = $image->store(static::UPLOAD_DIR, static::DISK);
+    }
+
+    public function deleteImage($field)
+    {
+        return Storage::disk(static::DISK)->delete($this->getRawOriginal($field));
+    }
+}

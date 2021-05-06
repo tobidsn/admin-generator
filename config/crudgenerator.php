@@ -76,9 +76,11 @@ return [
      * The name of the view path.
      */
     'view_path' => '_admin',
-    
+
     /**
      * Helper for the form
      */
     'form_helper' => 'adminlte3',
+
+    'route_file' => 'routes/api-cms.php',
 ];

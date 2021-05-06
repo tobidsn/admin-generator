@@ -1,0 +1,87 @@
+<?php
+
+namespace App\Observers;
+
+use Auth;
+use App\Models\{{modelName}};
+
+class {{modelName}}Observer
+{
+    /**
+     * Handle the {{modelName}} "creating" event.
+     *
+     * @param  \App\Models\{{modelName}}  {{modelNameSingularLowerCase}}
+     * @return void
+     */
+    public function creating({{modelName}} {{modelNameSingularLowerCase}})
+    {
+        {{modelNameSingularLowerCase}}->created_by = Auth::user()->id;
+        {{modelNameSingularLowerCase}}->updated_by = Auth::user()->id;
+    }
+
+    /**
+     * Handle the {{modelName}} "created" event.
+     *
+     * @param  \App\Models\{{modelName}}  {{modelNameSingularLowerCase}}
+     * @return void
+     */
+    public function created({{modelName}} {{modelNameSingularLowerCase}})
+    {
+        //
+    }
+
+    /**
+     * Handle the {{modelName}} "updating" event.
+     *
+     * @param  \App\Models\{{modelName}}  {{modelNameSingularLowerCase}}
+     * @return void
+     */
+    public function updating({{modelName}} {{modelNameSingularLowerCase}})
+    {
+        {{modelNameSingularLowerCase}}->updated_by = Auth::user()->id;
+    }
+
+    /**
+     * Handle the {{modelName}} "updated" event.
+     *
+     * @param  \App\Models\{{modelName}}  {{modelNameSingularLowerCase}}
+     * @return void
+     */
+    public function updated({{modelName}} {{modelNameSingularLowerCase}})
+    {
+        //
+    }
+
+    /**
+     * Handle the {{modelName}} "deleted" event.
+     *
+     * @param  \App\Models\{{modelName}}  {{modelNameSingularLowerCase}}
+     * @return void
+     */
+    public function deleted({{modelName}} {{modelNameSingularLowerCase}})
+    {
+        //
+    }
+
+    /**
+     * Handle the {{modelName}} "restored" event.
+     *
+     * @param  \App\Models\{{modelName}}  {{modelNameSingularLowerCase}}
+     * @return void
+     */
+    public function restored({{modelName}} {{modelNameSingularLowerCase}})
+    {
+        //
+    }
+
+    /**
+     * Handle the {{modelName}} "force deleted" event.
+     *
+     * @param  \App\Models\{{modelName}}  {{modelNameSingularLowerCase}}
+     * @return void
+     */
+    public function forceDeleted({{modelName}} {{modelNameSingularLowerCase}})
+    {
+        //
+    }
+}
