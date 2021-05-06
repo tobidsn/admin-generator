@@ -30,19 +30,19 @@ class CrudGenerator extends Command
     /**
      * Prefix of the route group
      */
-    
+
     protected $routeGroup = 'admin';
 
     /**
      * Prefix of the route group
      */
-    
+
     protected $viewPath = '_admin';
 
     /**
      * Helper for the form
      */
-    
+
     protected $formHelper = 'html';
 
     /**
@@ -80,13 +80,13 @@ class CrudGenerator extends Command
 
         if (file_exists(app_path("/{$name}.php"))) {
             if ($this->confirm('MVC already exist. Do you want to overwrite?')) {
-                $this->buildClass($name, $viewPath, $modelName, $tableName, $routeGroup);                
+                $this->buildClass($name, $viewPath, $modelName, $tableName, $routeGroup);
             }
             else {
                 $this->info('CRUD Generator stopped.');
             }
         } else {
-            $this->buildClass($name, $viewPath, $modelName, $tableName, $routeGroup);                
+            $this->buildClass($name, $viewPath, $modelName, $tableName, $routeGroup);
         }
     }
 
@@ -96,7 +96,7 @@ class CrudGenerator extends Command
         $this->model($name, $tableName);
         $this->request($name, $tableName);
         $this->call('crud:view', ['name' => strtolower($name), '--table' => $this->getField($tableName), '--view-path' => $viewPath, '--route-group' => $routeGroup, '--form-helper' => $this->formHelper]);
-        
+
 
         $route = $this->routeGroup.'/'.strtolower($name);
         $list = $this->routeGroup.'/'.strtolower($name).'list';
@@ -109,8 +109,8 @@ class CrudGenerator extends Command
     }
 
     protected function controller($name, $viewPath, $tableName, $routeGroup)
-    {   
-        
+    {
+
         $controllerTemplate = str_replace(
             [
                 '{{modelName}}',
@@ -137,7 +137,7 @@ class CrudGenerator extends Command
     }
 
     protected function model($name, $tableName)
-    {   
+    {
         $formFields = $this->getField($tableName);
         $request = '';
         foreach ($formFields as $key => $value) {
@@ -147,7 +147,7 @@ class CrudGenerator extends Command
 
                     $request = $request. "\$data->{$value['name']} = \$request->get('{$value['name']}');\n";
                 } else {
-                    
+
                     $request = $request. "\x20\x20\x20\x20\x20\x20\x20\x20\$data->{$value['name']} = \$request->get('{$value['name']}');\n";
                 }
             }
@@ -171,7 +171,7 @@ class CrudGenerator extends Command
     }
 
     protected function request($name, $tableName)
-    {   
+    {
         $formFields = $this->getField($tableName);
         $rules = '';
         foreach ($formFields as $key => $value) {
@@ -189,8 +189,8 @@ class CrudGenerator extends Command
 
         $requestTemplate = str_replace(
             [
-                '{{modelName}}', 
-                '{{rules}}' 
+                '{{modelName}}',
+                '{{rules}}'
             ],
             [
                 $name,
@@ -223,7 +223,7 @@ class CrudGenerator extends Command
             $formFields[$x]['type'] = $type;
             $formFields[$x]['required'] = ($item->Null == 'NO') ? true : false;
 
-            if (($formFields[$x]['type'] === 'select' || $formFields[$x]['type'] === 'enum')) 
+            if (($formFields[$x]['type'] === 'select' || $formFields[$x]['type'] === 'enum'))
             {
                 preg_match('#\((.*?)\)#', $item->Type, $match);
                 $options = $match[1];

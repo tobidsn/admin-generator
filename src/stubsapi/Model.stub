@@ -18,6 +18,13 @@ class {{modelName}} extends Model
     const UPLOAD_DIR = '{{modelNameSingularLowerCase}}';
 
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = '{{tableName}}';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array

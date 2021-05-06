@@ -5,6 +5,7 @@ namespace Tobidsn\CrudGenerator\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use DB;
+use Illuminate\Support\Str;
 
 class ApiGenerator extends Command
 {
@@ -31,6 +32,12 @@ class ApiGenerator extends Command
     protected $routeFile = 'routes/api-cms.php';
 
     /**
+     * The stub file
+     */
+
+    protected $stubFile = true;
+
+    /**
      * Create a new command instance.
      *
      * @return void
@@ -39,8 +46,8 @@ class ApiGenerator extends Command
     {
         parent::__construct();
 
-        if (config('apigenerator.route_file')) {
-            $this->routeFile = config('apigenerator.route_file');
+        if (config('crudgenerator.route_file')) {
+            $this->routeFile = config('crudgenerator.route_file');
         }
     }
 
@@ -55,7 +62,7 @@ class ApiGenerator extends Command
         $modelName  = $this->option('model') ? $this->option('model') : $name ;
         $tableName  = $this->option('table');
 
-        if (file_exists(app_path("/{$name}.php"))) {
+        if (file_exists(app_path("Models/{$name}.php"))) {
             if ($this->confirm('MVC already exist. Do you want to overwrite?')) {
                 $this->buildClass($name, $modelName, $tableName);
             }
@@ -76,20 +83,25 @@ class ApiGenerator extends Command
         $this->collection($name, $tableName);
         $this->observer($name, $tableName);
 
-        $string = `/* {$name} Routes */
-        Route::group(['prefix' => '{$name}', 'middleware' => 'auth:api-cms'], function() {
-            Route::get('', ['uses' => '{$name}Controller@index', 'as' => 'api-cms.{$name}']);
-            Route::post('', ['uses' => '{$name}Controller@store', 'as' => 'api-cms.{$name}-create']);
-            Route::get('/{{$name}}', ['uses' => '{$name}Controller@show', 'as' => 'api-cms.{$name}-detail']);
-            Route::put('/{{$name}}', ['uses' => '{$name}Controller@update', 'as' => 'api-cms.{$name}-update']);
-            Route::delete('/{{$name}}', ['uses' => '{$name}Controller@destroy', 'as' => 'api-cms.{$name}-delete']);
-        });`;
+        $lowerName = strtolower($name);
+
+        $string = "
+        Route::group(['prefix' => '{$lowerName}', 'middleware' => 'auth:api-cms'], function() {
+            Route::get('', ['uses' => '{$lowerName}Controller@index', 'as' => 'api-cms.{$lowerName}']);
+            Route::post('', ['uses' => '{$lowerName}Controller@store', 'as' => 'api-cms.{$lowerName}-create']);
+            Route::get('{{'{$lowerName}'}}', ['uses' => '{$lowerName}Controller@show', 'as' => 'api-cms.{$lowerName}-detail']);
+            Route::put('{{'{$lowerName}'}}', ['uses' => '{$lowerName}Controller@update', 'as' => 'api-cms.{$lowerName}-update']);
+            Route::delete('{{'{$lowerName}'}}', ['uses' => '{$lowerName}Controller@destroy', 'as' => 'api-cms.{$lowerName}-delete']);
+        });";
 
         File::append(base_path($this->routeFile), $string);
 
-        $this->info('Controller successfully.');
-        $this->info('Model successfully.');
-        $this->info('Request Validation successfully.');
+        $this->info($name.'Controller successfully.');
+        $this->info($name.'Model successfully.');
+        $this->info($name.'Request Validation successfully.');
+        $this->info($name.'Resources Validation successfully.');
+        $this->info($name.'Collection Validation successfully.');
+        $this->info($name.'Observer Validation successfully.');
     }
 
     protected function controller($name, $tableName)
@@ -103,7 +115,7 @@ class ApiGenerator extends Command
             ],
             [
                 $name,
-                strtolower(str_plural($name)),
+                strtolower(Str::plural($name, 2)),
                 strtolower($name),
             ],
             $this->getStub('Controller')
@@ -149,6 +161,10 @@ class ApiGenerator extends Command
             $this->getStub('Model')
         );
 
+        if (!file_exists(app_path("Models"))) {
+          mkdir(app_path("Models"), 0755, true);
+        }
+
         file_put_contents(app_path("Models/{$name}.php"), $modelTemplate);
     }
 
@@ -181,6 +197,10 @@ class ApiGenerator extends Command
             $this->getStub('Request')
         );
 
+        if (!file_exists(app_path("Http/Requests/Cms"))) {
+          mkdir(app_path("Http/Requests/Cms"), 0755, true);
+        }
+
         file_put_contents(app_path("Http/Requests/Cms/{$name}Request.php"), $requestTemplate);
     }
 
@@ -196,6 +216,10 @@ class ApiGenerator extends Command
             $this->getStub('Resource')
         );
 
+        if (!file_exists(app_path("Http/Resources/Cms"))) {
+          mkdir(app_path("Http/Resources/Cms"), 0755, true);
+        }
+
         file_put_contents(app_path("Http/Resources/Cms/{$name}Resource.php"), $requestTemplate);
     }
 
@@ -210,6 +234,10 @@ class ApiGenerator extends Command
             ],
             $this->getStub('Collection')
         );
+
+        if (!file_exists(app_path("Http/Resources/Cms"))) {
+          mkdir(app_path("Http/Resources/Cms"), 0755, true);
+        }
 
         file_put_contents(app_path("Http/Resources/Cms/{$name}Collection.php"), $requestTemplate);
     }
@@ -228,12 +256,20 @@ class ApiGenerator extends Command
             $this->getStub('Observer')
         );
 
+        if (!file_exists(app_path("Observers"))) {
+          mkdir(app_path("Observers"), 0755, true);
+        }
+
         file_put_contents(app_path("Observers/{$name}Observer.php"), $requestTemplate);
     }
 
     protected function getStub($type)
     {
-        return file_get_contents(resource_path("stubsapi/$type.stub"));
+        if (file_exists(resource_path("stubsapi/$type.stub"))) {
+            return file_get_contents(resource_path("stubsapi/$type.stub"));
+        } else {
+            return file_get_contents(__DIR__ . "/../stubsapi/$type.stub");
+        }
     }
 
     protected function getField($tableName)
