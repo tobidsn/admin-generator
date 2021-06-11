@@ -40,6 +40,9 @@ class CrudGeneratorServiceProvider extends ServiceProvider
             __DIR__ . '/stubsapi/' => base_path('resources/stubsapi/'),
         ]);
 
+        $this->publishes([
+            __DIR__ . '/stubs_web_api/' => base_path('resources/stubs_web_api/'),
+        ]);
     }
 
     /**
@@ -52,7 +55,8 @@ class CrudGeneratorServiceProvider extends ServiceProvider
         $this->commands(
             'Tobidsn\CrudGenerator\Commands\CrudGenerator',
             'Tobidsn\CrudGenerator\Commands\CrudViewCommand',
-            'Tobidsn\CrudGenerator\Commands\ApiGenerator'
+            'Tobidsn\CrudGenerator\Commands\ApiGenerator',
+            'Tobidsn\CrudGenerator\Commands\ApiWebGenerator'
         );
     }
 }

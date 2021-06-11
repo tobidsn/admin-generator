@@ -83,4 +83,6 @@ return [
     'form_helper' => 'adminlte3',
 
     'route_file' => 'routes/api-cms.php',
+
+    'route_web_file' => 'routes/api-web.php',
 ];

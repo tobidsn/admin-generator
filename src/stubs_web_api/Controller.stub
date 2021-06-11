@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Http\Controllers\Api\Web;
+
+use App\Http\Controllers\Controller;
+use App\Http\Resources\Web\{{modelName}}Collection;
+use App\Http\Resources\Web\{{modelName}}Resource;
+use App\Models\{{modelName}};
+use Illuminate\Http\Request;
+
+class {{modelName}}Controller extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        $perPage = $request->get('per-page', 10);
+        $query = {{modelName}}::published()->orderBy('created_at');
+        $query = $query->paginate($perPage)->withQueryString();
+        return {{modelName}}Collection::make($query);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\{{modelName}}  ${{modelNameSingularLowerCase}}
+     * @return \Illuminate\Http\Response
+     */
+    public function show({{modelName}} ${{modelNameSingularLowerCase}})
+    {
+        return {{modelName}}Resource::make(${{modelNameSingularLowerCase}});
+    }
+}
