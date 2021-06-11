@@ -84,14 +84,16 @@ class ApiGenerator extends Command
         $this->observer($name, $tableName);
 
         $lowerName = strtolower($name);
+        $upperName = strtoupper($name);
 
         $string = "
+        /* {$upperName} ROUTES */
         Route::group(['prefix' => '{$lowerName}', 'middleware' => 'auth:api-cms'], function() {
-            Route::get('', ['uses' => '{$lowerName}Controller@index', 'as' => 'api-cms.{$lowerName}']);
-            Route::post('', ['uses' => '{$lowerName}Controller@store', 'as' => 'api-cms.{$lowerName}-create']);
-            Route::get('{{'{$lowerName}'}}', ['uses' => '{$lowerName}Controller@show', 'as' => 'api-cms.{$lowerName}-detail']);
-            Route::put('{{'{$lowerName}'}}', ['uses' => '{$lowerName}Controller@update', 'as' => 'api-cms.{$lowerName}-update']);
-            Route::delete('{{'{$lowerName}'}}', ['uses' => '{$lowerName}Controller@destroy', 'as' => 'api-cms.{$lowerName}-delete']);
+            Route::get('', ['uses' => '{$name}Controller@index', 'as' => 'api-cms.{$lowerName}']);
+            Route::post('', ['uses' => '{$name}Controller@store', 'as' => 'api-cms.{$lowerName}-create']);
+            Route::get('{{$lowerName}}', ['uses' => '{$name}Controller@show', 'as' => 'api-cms.{$lowerName}-detail']);
+            Route::put('{{$lowerName}}', ['uses' => '{$name}Controller@update', 'as' => 'api-cms.{$lowerName}-update']);
+            Route::delete('{{$lowerName}}', ['uses' => '{$name}Controller@destroy', 'as' => 'api-cms.{$lowerName}-delete']);
         });";
 
         File::append(base_path($this->routeFile), $string);
@@ -173,9 +175,10 @@ class ApiGenerator extends Command
         $formFields = $this->getField($tableName);
         $rules = '';
         foreach ($formFields as $key => $value) {
-            if ($value['required'] && $value['name'] != 'id') {
+            $fieldExist = array('id','created_at','updated_at');
+            if (!in_array($value['name'], $fieldExist)) {
 
-                $rule = 'required';
+                $rule = $value['required'] ? 'required' : 'nullable';
                 if ($key == 1) {
                     $rules = $rules. "'".$value["name"]."' => '".$rule."',\n";
                 } else {
