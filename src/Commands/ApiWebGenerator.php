@@ -16,7 +16,8 @@ class ApiWebGenerator extends Command
      */
     protected $signature = 'crud:api-web {name : Class (singular) for example User}
                             {--table= : The name of the Table.}
-                            {--model= : The name of the Model.}';
+                            {--model= : The name of the Model.}
+                            {--type= : The name of Type.}';
 
     /**
      * The console command description.
@@ -61,24 +62,30 @@ class ApiWebGenerator extends Command
         $name       = ucfirst($this->argument('name'));
         $modelName  = $this->option('model') ? $this->option('model') : $name ;
         $tableName  = $this->option('table');
+        $type       = $this->option('type');
 
         if (file_exists(app_path("Http/Controllers/Api/Web/{$name}Controller.php"))) {
             if ($this->confirm('Controller Web already exist. Do you want to overwrite?')) {
-                $this->buildClass($name, $modelName, $tableName);
+                $this->buildClass($name, $modelName, $tableName, $type);
             }
             else {
                 $this->info('CRUD Generator stopped.');
             }
         } else {
-            $this->buildClass($name, $modelName, $tableName);
+            $this->buildClass($name, $modelName, $tableName, $type);
         }
     }
 
-    protected function buildClass($name, $modelName, $tableName)
+    protected function buildClass($name, $modelName, $tableName, $type)
     {
-        $this->controller($modelName, $tableName);
-        $this->resources($name, $tableName);
-        $this->collection($name, $tableName);
+        if ($type == 'resource') {
+            $this->resources($name, $tableName);
+            $this->collection($name, $tableName);
+        } else{
+            $this->controller($modelName, $tableName);
+            $this->resources($name, $tableName);
+            $this->collection($name, $tableName);
+        }
 
         $lowerName = strtolower($name);
         $upperName = strtoupper($name);
