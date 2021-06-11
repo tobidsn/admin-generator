@@ -81,28 +81,27 @@ class ApiWebGenerator extends Command
         if ($type == 'resource') {
             $this->resources($name, $tableName);
             $this->collection($name, $tableName);
+
+            $this->info($name.' Resources Validation successfully.');
+            $this->info($name.' Collection Validation successfully.');
         } else{
             $this->controller($modelName, $tableName);
             $this->resources($name, $tableName);
             $this->collection($name, $tableName);
+            $lowerName = strtolower($name);
+            $upperName = strtoupper($name);
+
+            $string = "
+            /* {$upperName} ROUTES */
+            Route::get('/{$lowerName}', ['uses' => '{$name}Controller@index', 'as' => 'api-web.{$lowerName}']);
+            Route::get('/{$lowerName}/{{$lowerName}}', ['uses' => '{$name}Controller@show', 'as' => 'api-web.{$lowerName}-detail']);";
+
+            File::append(base_path($this->routeFile), $string);
+
+            $this->info($name.' Controller successfully.');
+            $this->info($name.' Resources Validation successfully.');
+            $this->info($name.' Collection Validation successfully.');
         }
-
-        $lowerName = strtolower($name);
-        $upperName = strtoupper($name);
-
-        $string = "
-        /* {$upperName} ROUTES */
-        Route::get('/{$lowerName}', ['uses' => '{$name}Controller@index', 'as' => 'api-web.{$lowerName}']);
-        Route::get('/{$lowerName}/{{$lowerName}}', ['uses' => '{$name}Controller@show', 'as' => 'api-web.{$lowerName}-detail']);";
-
-        File::append(base_path($this->routeFile), $string);
-
-        $this->info($name.' Controller successfully.');
-        // $this->info($name.' Model successfully.');
-        // $this->info($name.' Request Validation successfully.');
-        $this->info($name.' Resources Validation successfully.');
-        $this->info($name.' Collection Validation successfully.');
-        // $this->info($name.' Observer Validation successfully.');
     }
 
     protected function controller($name, $tableName)
